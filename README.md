@@ -37,6 +37,9 @@ ShuffleByteSlice(byte_arr[:])
 
 ## func UpArrow(base uint64, exponant uint64, upArrowAmount uint64) uint64
 computes the upArrow function (https://en.wikipedia.org/wiki/Knuth%27s_up-arrow_notation)
+```
+res = UpArrow(2,4,1) //output will be 16
+```
 
 ## func GetRequestContentFromRequest(req *http.Request) map[string]interface{}
 returns the JSON from an `http.Request`
@@ -62,4 +65,7 @@ returns :
 * `20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1`
 
 ## func SieveOfEratosthenes(numberOfPrimes int64) []int64
-returns an slice of prime numbers smaller than the parameter `numberOfPrimes`
+returns a slice of prime numbers smaller than the parameter `numberOfPrimes`.
+* `SieveOfEratosthenes(20)`
+returns :
+* `2 3 5 7 11 13 17 19`
