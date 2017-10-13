@@ -7,21 +7,30 @@ import (
 	"errors"
 )
 
-func Decrypt(encoded []byte, key []byte) ([]byte, error) {
-	data, err := base64.StdEncoding.DecodeString(string(encoded))
+// Decrypts a text with aes in gcm mode nad returns it as a byte - array
+// The nonce will be extract from the first 12 bytes from the cipherText
+//
+// The key parameter represents the symmetric key which will be used to decrypt a text
+//
+// The cipherText parameter represents the text which will be encrypted
+func AESDecrypt(key *[]byte, cipherText []byte) (plainText []byte) {
+
+	nonce := cipherText[:12]
+
+	block, err := aes.NewCipher(*key)
 	if err != nil {
-		return nil, err
+		panic(err.Error())
 	}
-	block, err := aes.NewCipher(key)
+
+	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, err
+		panic(err.Error())
 	}
-	if len(data) < aes.BlockSize {
-		return nil, errors.New("cipherText too short")
+
+	plainText, err = aesgcm.Open(nil, nonce, cipherText[len(nonce):], nil)
+	if err != nil {
+		panic(err.Error())
 	}
-	iv := data[:aes.BlockSize]
-	data = data[aes.BlockSize:]
-	cfb := cipher.NewCFBDecrypter(block, iv)
-	cfb.XORKeyStream(data, data)
-	return data, nil
+
+	return
 }
